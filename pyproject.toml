@@ -1,0 +1,17 @@
+[project]
+name = "dz-catalog-analysis-26-555"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "AXY", email = "aksiniya.belyaeba@yandex.ru" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.9",
+]
+
+
