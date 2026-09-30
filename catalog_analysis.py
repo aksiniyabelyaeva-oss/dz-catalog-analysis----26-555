@@ -47,6 +47,7 @@ def duration_in_hours(minutes):
     remaining_minutes = minutes % 60
     return f"{hours}ч {remaining_minutes}м"
 
+
 def rating_tier(rating):
     if rating >= 9:
         return "шедевр"
@@ -54,6 +55,7 @@ def rating_tier(rating):
         return "хорошо"
     else:
         return "средне" if rating >= 5 else "слабо"
+
 
 def decade_label(year):
     match year:
@@ -63,13 +65,44 @@ def decade_label(year):
             return "недавние"
         case _ if year < 2015:
             return "старые"
-        
+
+
+def normalize_title(title):
+    words = title.split()
+    result = []
+    for word in words:
+        new_word = word[0].upper() + word[1:]
+        result.append(new_word)
+    return " ".join(result)
+
+
+def make_slug(title):
+    lower_title = title.lower()
+    slug = lower_title.replace(" ", "-")
+    return slug
+
+
+def format_report_line(movie):
+    genres_sorted = sorted(movie["genres"])
+    genres_text = ", ".join(genres_sorted)
+    duration_text = duration_in_hours(movie["duration_min"])
+    return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}/10, {duration_text}, жанры: {genres_text}' # noqa: E501
+
+
+def count_long_movies(movies, threshold=120):
+    count = 0
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            count += 1
+    return count
+
+
 def main():
     for movie in movies:
         if "comedy" in movie["genres"]:
             continue
         print(movie["title"])
-        
+
     i = 0
     while i < len(movies):
         if movies[i]["rating"] > 9.0:
@@ -79,12 +112,10 @@ def main():
     else:
         print("Шедевров не найдено")
 
-def count_long_movies(movies, threshold=120):
-    count = 0
-    for movie in movies:
-        if movie["duration_min"] > threshold:
-            count += 1
-    return count
+    print(count_long_movies(movies))
+    print(normalize_title("silent hours"))
+    print(make_slug("Silent Hours"))
+    print(format_report_line(movies[7]))
 
 
 if __name__ == "__main__":
