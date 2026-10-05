@@ -96,6 +96,20 @@ def count_long_movies(movies, threshold=120):
             count += 1
     return count
 
+def titles_sorted_by_rating(movies):
+    sorted_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    titles = []
+    for movie in sorted_movies:
+        titles.append(movie["title"])
+    return titles
+
+def top_n_by_rating(movies, n=3):
+    sorted_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    result = []
+    for movie in sorted_movies[:n]:
+        result.append((movie["title"], movie["rating"]))
+    return result
+
 
 def main():
     for movie in movies:
@@ -116,6 +130,8 @@ def main():
     print(normalize_title("silent hours"))
     print(make_slug("Silent Hours"))
     print(format_report_line(movies[7]))
+    print(titles_sorted_by_rating(movies))
+    print(top_n_by_rating(movies))
 
 
 if __name__ == "__main__":
